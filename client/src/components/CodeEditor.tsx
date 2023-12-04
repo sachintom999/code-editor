@@ -36,7 +36,8 @@ export default function CodeEditor({ language }: { language: string }) {
             style={{
                 fontFamily: '"Fira code", "Fira Mono", monospace',
                 fontSize: 12,
-                height:"900px"
+                height:"600px",
+                padding:"4px"
             }}
         />
     )

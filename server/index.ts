@@ -1,7 +1,7 @@
 import cors from "cors"
 import dotenv from "dotenv"
 import express, { Request, Response } from "express"
-import mongoose from "mongoose"
+import { router } from "./routes/run-javascript"
 
 dotenv.config()
 const port = process.env.PORT
@@ -11,10 +11,10 @@ app.use(express.json())
 app.use(cors())
 
 app.get("/", (req: Request, res: Response) => {
-    console.log("123 ===", 123)
-
     return res.json({ msg: "hello..." })
 })
+
+app.use("/", router)
 
 app.post("/run-code", (req: Request, res: Response) => {
     console.log("req.body ===", req.body)
@@ -25,8 +25,6 @@ app.post("/run-code", (req: Request, res: Response) => {
     return res.json({ msg: "posted" })
 })
 
-mongoose.connect(process.env.MONGO_URI as string).then(() => {
-    app.listen(port, () => {
-        console.log(`connected to DB listening on ${port} !!`)
-    })
+app.listen(port, () => {
+    console.log(`Listening on ${port} 🚀`)
 })
