@@ -2,19 +2,27 @@ import { Dispatch, SetStateAction } from "react"
 
 type Navbar = {
     language: string
+    code: string
     setLanguage: Dispatch<SetStateAction<string>>
     setOutput: Dispatch<SetStateAction<string>>
+    setCode: Dispatch<SetStateAction<string>>
 }
 
-const Navbar = ({ setLanguage,setOutput }: Navbar) => {
+const Navbar = ({
+    setLanguage,
+    setOutput,
+    language,
+    code,
+    setCode,
+}: Navbar) => {
     const handleClick = async () => {
-
-        setOutput("")
+        setOutput("Executing....")
         const reqBody = {
-            code: "console.log('hello...')",
+            code,
             inputData: null,
+            language,
         }
-        const response = await fetch("http://localhost:4001/run-javascript", {
+        const response = await fetch(`http://localhost:4001/run-code`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -24,12 +32,9 @@ const Navbar = ({ setLanguage,setOutput }: Navbar) => {
         const text = await response.text()
         // console.log("text ===",text)
         setOutput(text)
-        
-        
+
         // console.log("json:", json)
         // console.log("response ===",response)
-        
-        
     }
 
     return (
@@ -38,6 +43,7 @@ const Navbar = ({ setLanguage,setOutput }: Navbar) => {
                 className="mb-4"
                 onChange={e => {
                     setLanguage(e.target.value)
+                    setCode("")
                 }}
             >
                 <option value={"javascript"}>javascript</option>

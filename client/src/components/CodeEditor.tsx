@@ -1,19 +1,18 @@
-import Prism from "prismjs" // Import Prism.js
-import "prismjs/themes/prism.css" // Import the theme you prefer
-import React from "react"
+import Prism from "prismjs"
+import "prismjs/themes/prism.css"
+import { Dispatch, SetStateAction } from "react"
 import Editor from "react-simple-code-editor"
 
-// Import the languages you'll use
 import "prismjs/components/prism-javascript"
 import "prismjs/components/prism-python"
 
-export default function CodeEditor({ language }: { language: string }) {
-    const [code, setCode] = React.useState(
-        `function logger() {\n  console.log("hello");\n} \n\nlogger()`
-    )
+type CodeEditor = {
+    language: string
+    code: string
+    setCode: Dispatch<SetStateAction<string>>
+}
 
-    console.log("language ===", language)
-
+export default function CodeEditor({ language, code, setCode }) {
     const getLanguage = (language: string) => {
         switch (language) {
             case "python":
@@ -31,13 +30,13 @@ export default function CodeEditor({ language }: { language: string }) {
             onValueChange={code => setCode(code)}
             highlight={code =>
                 Prism.highlight(code, getLanguage(language), language)
-            } // Adjust as needed
+            }
             padding={10}
             style={{
                 fontFamily: '"Fira code", "Fira Mono", monospace',
                 fontSize: 12,
-                height:"600px",
-                padding:"4px"
+                height: "600px",
+                // padding: "16px",
             }}
         />
     )

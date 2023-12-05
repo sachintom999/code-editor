@@ -1,0 +1,11 @@
+FROM python:latest
+
+WORKDIR /app
+
+RUN touch main.py
+
+ENV CODE ""
+
+ENV INPUT_DATA ""
+
+CMD ["sh", "-c", "echo \"$CODE\" > main.py && echo \"$INPUT_DATA\" > input.txt && python main.py < input.txt"]

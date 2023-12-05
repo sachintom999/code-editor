@@ -1,7 +1,7 @@
 import cors from "cors"
 import dotenv from "dotenv"
 import express, { Request, Response } from "express"
-import { router } from "./routes/run-javascript"
+import { executeCode } from "./utils/runCode"
 
 dotenv.config()
 const port = process.env.PORT
@@ -10,19 +10,21 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-app.get("/", (req: Request, res: Response) => {
-    return res.json({ msg: "hello..." })
-})
+app.post("/run-code", async (req: Request, res: Response) => {
+    const { code, language, inputData } = req.body
 
-app.use("/", router)
+    try {
+        const execOutput = await executeCode(language, code, inputData)
 
-app.post("/run-code", (req: Request, res: Response) => {
-    console.log("req.body ===", req.body)
+        console.log("code ===",code)
+        
+        
 
-    const { code, language } = req.body
-    console.log("{code,language} ===", { code, language })
-
-    return res.json({ msg: "posted" })
+        res.send(execOutput)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json(error)
+    }
 })
 
 app.listen(port, () => {
